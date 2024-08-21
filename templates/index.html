@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Processing - Analyze Your Speech</title>
+    <style>
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes buttonHover {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0px;
+            padding: 0px;
+            background: white;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            width: 100%;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            background-color: #003366;
+            color: #fff;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+            font-family: 'Georgia', serif;
+        }
+
+        header h1 span {
+            margin-left: 0px;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 90%;
+            margin: 10px auto;
+            background: #222;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1.5s ease-out;
+            flex: 1;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #47b7ff;
+            color: #003366;
+            border: 2px solid #5f7eff;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        input[type="file"]:hover {
+            background-color: #5f7eff;
+        }
+
+        button {
+            display: block;
+            margin: 30px auto;
+            padding: 10px 30px;
+            background-color: #1d7fd7;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            animation: buttonHover 1s infinite;
+            font-weight: bold;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        button:hover {
+            background-color: #1a6fc2;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #333;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: bold;
+            word-wrap: break-word;
+        }
+
+        .error {
+            color: #f76c6c;
+            text-align: center;
+            font-weight: bold;
+            word-wrap: break-word;
+        }
+
+        footer {
+            width: 100%;
+            padding: 10px;
+            background-color: #003366;
+            color: #fff;
+            text-align: center;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            position: relative;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        @media (max-width: 750px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            input[type="file"],
+            button {
+                padding: 10px;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.2em;
+            }
+
+            input[type="file"],
+            button {
+                padding: 8px;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            footer p {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Want To Know Your Emotions?<span>🎤</span></h1>
+    </header>
+
+    <div class="container">
+        <form method="POST" action="/process_audio" enctype="multipart/form-data">
+            <input type="file" name="audio" accept="audio/*">
+            <button type="submit">Process Audio</button>
+        </form>
+
+        {% if transcription %}
+        <div class="result">
+            <h2>Transcription</h2>
+            <p>{{ transcription }}</p>
+            <h2>Detected Emotion</h2>
+            <p>{{ emotion }}</p>
+            <h2>Summary</h2>
+            <p>{{ summary }}</p>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+    </div>
+
+    <footer>
+        <p>App created by Ritu Priya Singh</p>
+    </footer>
+</body>
+
+</html>
